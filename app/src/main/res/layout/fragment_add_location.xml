@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/txtLocName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location Name:" />
+
+        <EditText
+            android:id="@+id/etxtLocName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Switch
+            android:id="@+id/swCoords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="Prefer Coordinates" />
+
+        <TextView
+            android:id="@+id/txtEnterAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address" />
+
+        <EditText
+            android:id="@+id/etxtEnterAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:ems="10"
+            android:inputType="textPostalAddress" />
+
+        <TextView
+            android:id="@+id/txtEnterLat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Latitude:" />
+
+        <EditText
+            android:id="@+id/etxtEnterLat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:clickable="false"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/txtEnterLong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Longitude:" />
+
+        <EditText
+            android:id="@+id/etxtEnterLong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:clickable="false"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location Icon"
+            android:layout_gravity="center"/>
+
+        <Spinner
+            android:id="@+id/spIcons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/btnSaveLocation"
+            android:layout_width="244dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="Add Location" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="244dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:text="Cancel"
+
+            />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

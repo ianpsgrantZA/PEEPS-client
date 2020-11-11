@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.RegisterActivity">
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:background="@color/colorPrimary"
+        android:text="register"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etxtPassword" />
+
+    <TextView
+        android:id="@+id/txtUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:text="Username"
+        app:layout_constraintBottom_toBottomOf="@+id/etxtUsername"
+        app:layout_constraintEnd_toStartOf="@+id/etxtUsername"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:text="Password"
+        app:layout_constraintBottom_toBottomOf="@+id/etxtPassword"
+        app:layout_constraintEnd_toEndOf="@+id/txtUsername" />
+
+    <EditText
+        android:id="@+id/etxtPassword"
+        android:layout_width="185dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="60dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
+
+    <EditText
+        android:id="@+id/etxtUsername"
+        android:layout_width="185dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="60dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
