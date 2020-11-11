@@ -19,8 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +26,7 @@ import com.example.peeps_client.R;
 import com.example.peeps_client.supplementary.JSONParser;
 import com.example.peeps_client.supplementary.SQLiteDBHelper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,9 +51,7 @@ public class LocationFragment extends Fragment{
     //Emulator IP for getting location
     private static String url_pop_data;
     // JSON tags
-    private static final String TAG_COORDINATES = "coordinates";
-    private static final String TAG_LATITUDES = "location_lat";
-    private static final String TAG_LONGITUDES = "location_lon";
+    private static final String TAG_LOCATIONS = "locations";
     private static final String TAG_SUCCESS = "success";
     //JsonParser
     final JSONParser jsonParser = new JSONParser();
@@ -62,15 +59,8 @@ public class LocationFragment extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        locationViewModel =
-//                ViewModelProviders.of(this).get(LocationViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-//        locationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//            }
-//        });
-//
         return root;
     }
 
@@ -94,7 +84,8 @@ public class LocationFragment extends Fragment{
         //get location data from server
         getPopDensity(savedLocationLonLat);
 
-//        populateRecycler(new int[]{1,1,1,5,3,2,1,1,3,4,2,5,6,4,2,2});
+        //test
+//        populateRecycler(new int[][]{{1,1,1,5,3,2,1,1,3,4,2,5,6,4,2,2},{0,0,0,0,0,0,0,0,0,0,2,5,6,4,2,2},{1,1,1,5,3,2,1,1,3,4,2,5,6,4,2,2},{1,1,1,5,3,2,1,1,3,4,2,5,6,4,2,2},{1,1,1,5,3,2,1,1,3,4,2,5,6,4,2,2}}); //test
 
     }
 
@@ -141,18 +132,6 @@ public class LocationFragment extends Fragment{
     }
 
 
-    private void saveToDB(String name,float lat,float lon, int imageID) {
-        SQLiteDatabase database = new SQLiteDBHelper(getContext()).getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(SQLiteDBHelper.LOCATION_COLUMN_NAME, name);
-        values.put(SQLiteDBHelper.LOCATION_COLUMN_LAT, lat);
-        values.put(SQLiteDBHelper.LOCATION_COLUMN_LONG, lon);
-        values.put(SQLiteDBHelper.LOCATION_COLUMN_LONG, imageID);
-        long newRowId = database.insert(SQLiteDBHelper.LOCATION_TABLE_NAME, null, values);
-
-        Toast.makeText(getContext(), "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
-    }
-
     private String[][] readFromDB(View view) {
 
         SQLiteDatabase database = new SQLiteDBHelper(context).getReadableDatabase(); //error needs fixing
@@ -164,12 +143,6 @@ public class LocationFragment extends Fragment{
                 SQLiteDBHelper.LOCATION_COLUMN_IMAGE
         };
 
-//        String selection =
-//                SampleSQLiteDBHelper.PERSON_COLUMN_NAME + " like ? and " +
-//                        SampleSQLiteDBHelper.PERSON_COLUMN_AGE + " > ? and " +
-//                        SampleSQLiteDBHelper.PERSON_COLUMN_GENDER + " like ?";
-//
-//        String[] selectionArgs = {"%" + name + "%", age, "%" + gender + "%"};
 
         Cursor cursor = database.query(
                 SQLiteDBHelper.LOCATION_TABLE_NAME,   // The table to query
@@ -191,14 +164,9 @@ public class LocationFragment extends Fragment{
         for (int i = 0; i < img.length; i++) {
             images[i] = img[i];
         }
-        //get saved location latitudes and longitudes
+
         String[] latString = cursorToString(cursor, SQLiteDBHelper.LOCATION_COLUMN_LAT);
         String[] lonString = cursorToString(cursor, SQLiteDBHelper.LOCATION_COLUMN_LONG);
-//        float savedLocationLonLat[][] = new float[2][latString.length];
-//        for (int i = 0; i < latString.length; i++) {
-//            savedLocationLonLat[1][i]= Float.parseFloat(latString[i]);
-//            savedLocationLonLat[0][i]= Float.parseFloat(lonString[i]);
-//        }
 
         cursor.close();
         database.close();
@@ -208,11 +176,17 @@ public class LocationFragment extends Fragment{
 
     private void getPopDensity(String[][] savedLocationLonLat){
         Log.d(TAG,"getPopDensity(...) Called");
-
         JSONObject jsonObject = new JSONObject();
+        int locCount = savedLocationLonLat[0].length;
+
+        //convert to correct format
+        String[][] locs = new String[locCount][2];
+        for (int i = 0; i < locCount; i++) {
+            locs[i] = new String[]{savedLocationLonLat[0][i],savedLocationLonLat[1][i]};
+        }
+
         try {
-            jsonObject.put(TAG_LONGITUDES, savedLocationLonLat[0]);
-            jsonObject.put(TAG_LATITUDES, savedLocationLonLat[1]);
+            jsonObject.put(TAG_LOCATIONS, new JSONArray(locs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -234,15 +208,20 @@ public class LocationFragment extends Fragment{
                     if (success == 1){
                         //succeeded
 
-                        int populationTimeArray[] = new int[15];
+                        int populationTimeArray[][] = new int[locs.length][15];
+
                         for (int i = 8; i < 23; i++) {
-                            populationTimeArray[i-8] = JSONReturn.getInt("n"+i+"_"+(i+1));
+                            for (int j = 0; j < locs.length; j++) {
+                                populationTimeArray[j][i-8] = JSONReturn.getInt("n"+i+"_"+(i+1)+"_loc"+j);
+                            }
+
                         }
 
                         //fill recylerView
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+//                                System.out.println(Arrays.toString(populationTimeArray));
                                 populateRecycler(populationTimeArray); //change
                             }
                         });
@@ -260,7 +239,7 @@ public class LocationFragment extends Fragment{
 
     }
 
-    private void populateRecycler(int populationTimeArray[]){
+    private void populateRecycler(int populationTimeArray[][]){
         recyclerAdapter = new RecyclerAdapter(getContext(), titles, states, images,populationTimeArray,recyclerView); // (getContext(), titles, states, images,recyclerView)
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

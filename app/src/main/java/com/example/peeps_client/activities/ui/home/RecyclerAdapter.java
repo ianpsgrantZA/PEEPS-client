@@ -21,7 +21,6 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
@@ -30,7 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     // Card data
     String titles[], states[];
     int images[];
-    int populationTimeArray[];
+    int populationTimeArray[][];
     Context context;
     RecyclerView recyclerView;
 
@@ -38,7 +37,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     int mExpandedPosition = -1;
 
 
-    public RecyclerAdapter(Context ct, String s1[], String s2[], int img[],int pta[],RecyclerView rv){
+    public RecyclerAdapter(Context ct, String s1[], String s2[], int img[],int pta[][],RecyclerView rv){
         context = ct;
         titles = s1;
         states = s2;
@@ -59,7 +58,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // Set card details
         holder.txtTitle.setText(titles[position]);
-//        holder.txtState.setText("State: "+states[position]);
         holder.imgIcon.setImageResource(images[position]);
 
         //set Card colour
@@ -83,24 +81,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
 //                new DataPoint(6, 0), //6:00
 //                new DataPoint(7, 1), //
-                new DataPoint(8, populationTimeArray[0]),
-                new DataPoint(9, populationTimeArray[1]),
-                new DataPoint(10, populationTimeArray[2]),
-                new DataPoint(11, populationTimeArray[3]),
-                new DataPoint(12, populationTimeArray[4]),
-                new DataPoint(13, populationTimeArray[5]),
-                new DataPoint(14, populationTimeArray[6]),
-                new DataPoint(15, populationTimeArray[7]),
-                new DataPoint(16, populationTimeArray[8]),
-                new DataPoint(17, populationTimeArray[9]),
-                new DataPoint(18, populationTimeArray[10]),
-                new DataPoint(19, populationTimeArray[11]),
-                new DataPoint(20, populationTimeArray[12]),
-                new DataPoint(21, populationTimeArray[13]),
-                new DataPoint(22, populationTimeArray[14])//,
+                new DataPoint(8, populationTimeArray[position][0]),
+                new DataPoint(9, populationTimeArray[position][1]),
+                new DataPoint(10, populationTimeArray[position][2]),
+                new DataPoint(11, populationTimeArray[position][3]),
+                new DataPoint(12, populationTimeArray[position][4]),
+                new DataPoint(13, populationTimeArray[position][5]),
+                new DataPoint(14, populationTimeArray[position][6]),
+                new DataPoint(15, populationTimeArray[position][7]),
+                new DataPoint(16, populationTimeArray[position][8]),
+                new DataPoint(17, populationTimeArray[position][9]),
+                new DataPoint(18, populationTimeArray[position][10]),
+                new DataPoint(19, populationTimeArray[position][11]),
+                new DataPoint(20, populationTimeArray[position][12]),
+                new DataPoint(21, populationTimeArray[position][13]),
+                new DataPoint(22, populationTimeArray[position][14])//,
 
-//                new DataPoint(23, 11),
-//                new DataPoint(24, 10)
 
         });
         series.setSpacing(4);
@@ -124,32 +120,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     //set colour of location
     void setCardColour(MyViewHolder holder, int position){
-        Log.d(TAG, "colour");
+        Log.d(TAG, "SetColour");
         int max = 0;
         int min = 200000000;
         double upper = 0.7;
         double lower = 0.3;
 
         for (int i = 0; i < populationTimeArray.length; i++) {
-            if (populationTimeArray[i] > max) {
-                max = populationTimeArray[i];
+            if (populationTimeArray[position][i] > max) {
+                max = populationTimeArray[position][i];
             }
-            if (populationTimeArray[i] < min) {
-                min = populationTimeArray[i];
+            if (populationTimeArray[position][i] < min) {
+                min = populationTimeArray[position][i];
             }
         }
 
         Calendar calendar = GregorianCalendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        System.out.println(hour);
 
         if (max == min || hour<8 || hour>22) {
             holder.txtState.setText("Normal");
             holder.itemView.setBackgroundColor(Color.parseColor("#a0ed8e")); //normal
-        }else if(populationTimeArray[hour-8]>=upper*(max-min)){
+        }else if(populationTimeArray[position][hour-8]>=upper*(max-min)){
             holder.txtState.setText("Busy");
             holder.itemView.setBackgroundColor(Color.parseColor("#fa8484")); //busy
-        }else if (populationTimeArray[hour-8] <= lower*(max-min)) {
+        }else if (populationTimeArray[position][hour-8] <= lower*(max-min)) {
             holder.txtState.setText("Quiet");
             holder.itemView.setBackgroundColor(Color.parseColor("#8eaee6")); //quiet #8eaee6
         }else{
@@ -193,7 +188,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtState = itemView.findViewById(R.id.txtState);
             imgIcon = itemView.findViewById(R.id.imgIcon);
-//            imgGraph = itemView.findViewById(R.id.imgGraph);
             graphTime = (GraphView) itemView.findViewById(R.id.graphTime);
         }
     }

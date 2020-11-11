@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "peeps_local";
@@ -15,10 +13,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public static final String LOCATION_COLUMN_LAT = "lat";
     public static final String LOCATION_COLUMN_LONG = "long";
     public static final String LOCATION_COLUMN_IMAGE = "image";
-
-
-
-
 
 
     public SQLiteDBHelper(Context context) {

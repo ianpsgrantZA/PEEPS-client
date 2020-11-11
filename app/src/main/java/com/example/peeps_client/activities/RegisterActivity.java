@@ -96,7 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),"Registration successful.",Toast.LENGTH_SHORT).show();
                                     }
                                 });
-//                                Toast toast = Toast.makeText(getApplicationContext(), "Registration Successful.", Toast.LENGTH_SHORT);
                                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(i);
 
@@ -107,29 +106,13 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),"Registration unsuccessful.",Toast.LENGTH_SHORT).show();
                                     }
                                 });
-//                                Toast toast = Toast.makeText(getApplicationContext(), "Login unsuccessful.", Toast.LENGTH_SHORT);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }.start();
-//                thread.start();
-//                try {
-////                    thread.join();
-////                } catch (InterruptedException e) {
-////                    e.printStackTrace();
-////                }
-//
-//
-////                String returnVal = jsonParser.makeHttpRequest(url_register, "POST", testString);
-////                System.out.println(returnVal);
             }
         });
     }
-
-
-
 }

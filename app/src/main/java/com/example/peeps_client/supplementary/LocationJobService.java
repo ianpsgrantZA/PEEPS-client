@@ -1,22 +1,15 @@
 package com.example.peeps_client.supplementary;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.peeps_client.R;
@@ -25,15 +18,12 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.TimeZone;
 
 public class LocationJobService extends JobService {
@@ -49,7 +39,6 @@ public class LocationJobService extends JobService {
     // JSON tags
     private static final String TAG_USER_ID = "user_id";
     private static final String TAG_TIMESTAMP = "timestamp";
-    private static final String TAG_NEARBY = "nearby";
     private static final String TAG_LOCATION_LAT = "location_lat";
     private static final String TAG_LOCATION_LON = "location_lon";
 
@@ -160,6 +149,7 @@ public class LocationJobService extends JobService {
                                 public void run() {
                                     super.run();
 
+                                    //send location to server
                                     sendLocationData(location);
 
                                     Log.d(TAG, "Job finished.");
@@ -176,9 +166,8 @@ public class LocationJobService extends JobService {
         };
         Log.d(TAG, "getLastLocation() check permission " + checkPermission());
         if (checkPermission()) {
-//            LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            //start location gathering
             mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
-//            getFusedLocationProviderClient(context).removeLocationUpdates(mLocationCallback);
         }
         Log.d(TAG, "getLastLocation() finished requesting updates");
 
@@ -188,12 +177,11 @@ public class LocationJobService extends JobService {
     public boolean onStopJob(JobParameters jobParameters) {
         Log.d(TAG, "Job cancelled before completion.");
         jobCancelled = true;
-        return false; //maybe true
+        return false;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        return super.onStartCommand(intent, flags, startId);
         return Service.START_STICKY;
     }
 

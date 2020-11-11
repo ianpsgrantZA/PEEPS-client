@@ -33,7 +33,6 @@ public class MapmodeFragment extends Fragment {
     //Emulator IP for getting location
     private static String url_mapmode;
 
-//    private MapmodeViewModel mapmodeViewModel;
 
     //GUI
     TextView txtLocIn1,txtLocIn2,txtLocIn3,txtLocIn4;
@@ -43,8 +42,7 @@ public class MapmodeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        mapmodeViewModel =
-//                ViewModelProviders.of(this).get(MapmodeViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_mapmode, container, false);
         return root;
     }
@@ -175,7 +173,7 @@ public class MapmodeFragment extends Fragment {
         }.start();
 
     }
-
+    //calculate time to destination
     double timeToDestination(float[] loc1, float[] loc2){
         double earthRadius = 6371000; //meters
         double walkingSpeed = 5.0;
