@@ -1,1 +1,3 @@
-Android App for PEEPS.
+# PEEPS Android Client App
+
+The Android app used as part of the PEEPS environment.
